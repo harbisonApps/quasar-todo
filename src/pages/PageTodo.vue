@@ -1,4 +1,3 @@
-/* eslint-disable vue/no-unused-vars */
 <template>
   <q-page padding>
     <p>Todo Page</p>
@@ -6,6 +5,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      tasks:[
+        {
+          id:1,
+          name: "",
+          completed: false
+        }
+      ]
+    }
+  },
+};
 </script>
-<style></style>
+<style lang="scss" scoped></style>
