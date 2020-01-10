@@ -26,7 +26,7 @@
 
     <q-drawer
       v-model="leftDrawerOpen"
-      :breakpoint="769"
+      :breakpoint="768"
       :width="225"
       bordered
       content-class="bg-primary"
@@ -93,5 +93,8 @@ export default {
 }
 .q-tab__indicator {
   visibility: hidden;
+}
+.strikethrough {
+  text-decoration: line-through;
 }
 </style>

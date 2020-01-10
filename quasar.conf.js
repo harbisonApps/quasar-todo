@@ -46,7 +46,13 @@ module.exports = function (ctx) {
         'QFooter',
         'QTabs',
         'QTab',
-        'QRouteTab'
+        'QRouteTab',
+        'QList',
+        'QItem',
+        'QItemSection',
+        'QItemLabel',
+        'QIcon'
+
       ],
       directives: [],
 
@@ -78,7 +84,7 @@ module.exports = function (ctx) {
           options: {
             formatter: require('eslint').CLIEngine.getFormatter('stylish')
           }
-        })
+        });
       }
     },
 
@@ -185,5 +191,5 @@ module.exports = function (ctx) {
         // chainWebpack also available besides this extendWebpack
       }
     }
-  }
-}
+  };
+};
