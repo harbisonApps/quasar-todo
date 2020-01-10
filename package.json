@@ -1,6 +1,6 @@
 {
-  "name": "quazar-todo",
-  "version": "0.0.1",
+  "name": "quasar-todo",
+  "version": "0.1.0",
   "description": "A Quasar Framework app",
   "productName": "Quazar Todo",
   "cordovaId": "org.cordova.quasar.app",
