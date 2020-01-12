@@ -56,6 +56,7 @@ export default {
         .dialog({
           title: "Confirm",
           message: "Would you like to delete this task?",
+          position: "bottom",
           ok: {
             push: true,
             color: "green"
