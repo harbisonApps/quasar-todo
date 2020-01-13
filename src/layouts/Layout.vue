@@ -64,7 +64,7 @@ export default {
 
   data() {
     return {
-      leftDrawerOpen: false,
+      leftDrawerOpen: true,
       appVersion: "0.1.0",
       navs: [
         { to: "/", icon: "list", label: "Todo" },
