@@ -1,13 +1,13 @@
 <template>
   <q-page class="q-pa-md">
-    <q-list v-if="Object.keys(tasks).length" separator bordered>
-      <Task
-        v-for="(task, key) in tasks"
-        :key="key"
-        :task="task"
-        :id="key"
-      ></Task>
-    </q-list>
+    <NoTasks @showAddTask="showAddTask = true" v-if="!Object.keys(tasksTodo).length"></NoTasks>
+    <TasksTodo :tasksTodo="tasksTodo"
+       v-else
+    ></TasksTodo>
+    <TasksComplete v-if="Object.keys(tasksComplete).length"
+      :tasksComplete="tasksComplete" >
+    </TasksComplete>
+    
     <div class="absolute-bottom text-center q-mb-lg">
       <q-btn ripple fab round @click="showAddTask = true"
         color="primary" size="xl" icon="add"/>
@@ -27,11 +27,18 @@ export default {
     }
   },
   components: {
-    Task: require("components/Tasks/Task.vue").default,
-    AddTask: require("components/Tasks/Modals/AddTask.vue").default
+    TasksTodo: require("components/Tasks/TasksTodo.vue").default,
+    TasksComplete: require("components/Tasks/TasksComplete.vue").default,
+    AddTask: require("components/Tasks/Modals/AddTask.vue").default,
+    NoTasks: require("components/Tasks/NoTasks.vue").default
   },
   computed: {
-    ...mapGetters("tasks", ["tasks"])
+    ...mapGetters("tasks", ["tasksTodo", "tasksComplete"])
+  },
+  mounted(){
+    this.$root.$on('showAddTask', () => {
+      this.showAddTask = true
+    })
   }
 };
 </script>
