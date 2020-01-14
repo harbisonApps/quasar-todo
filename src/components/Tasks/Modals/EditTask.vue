@@ -1,6 +1,6 @@
 <template>
   <q-card>
-    <ModalHeader>Add Task</ModalHeader>
+    <ModalHeader>Edit Task</ModalHeader>
     <q-space/> 
     <q-form @submit.prevent="submitForm">
       <ModalTaskName ref="modalTaskName" :name.sync="taskToSumbit.name"/>
@@ -14,6 +14,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
+  props: ["task", "id"],
   components: {
     ModalHeader: require("components/Tasks/Modals/shared/ModalHeader.vue").default,
     ModalTaskName: require("components/Tasks/Modals/shared/ModalTaskName.vue").default,
@@ -25,16 +26,16 @@ export default {
     data(){
       return{
         taskToSumbit: {
-          name: "",
-          details: "",
-          dueDate: "",
-          dueTime: "",
-          completed: false
+          // name: "",
+          // details: "",
+          // dueDate: "",
+          // dueTime: "",
+          // completed: false
         }
       }
     },
     methods: {
-      ...mapActions('tasks', ['addTask']),
+      ...mapActions('tasks', ['updateTask']),
       submitForm() {
         this.$refs.modalTaskName.$refs.name.validate()
         if(!this.$refs.modalTaskName.$refs.name.hasError) {
@@ -42,9 +43,15 @@ export default {
         }
       },
       submitTask() {
-        this.addTask(this.taskToSumbit)
+        this.updateTask({
+          id: this.id,
+          updates: this.taskToSumbit
+        })
         this.$emit('close')
       }
+    },
+    mounted() {
+      this.taskToSumbit = Object.assign({}, this.task)
     }
 }
 </script>

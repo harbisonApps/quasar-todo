@@ -13,14 +13,12 @@
       <q-item-label :class="{ strikethrough: task.completed }">
         {{ task.name }}
       </q-item-label>
+      
       <q-item-label caption>{{ task.details }}</q-item-label>
     </q-item-section>
 
     <q-item-section v-if="task.dueDate" side>
       <div class="row">
-        <div class="column justify-center">
-          <q-icon name="events" color="primary" size="24px" />
-        </div>
         <div class="column justify-center">
           <q-item-label class="row justify-end" caption>
             {{ task.dueDate }}
@@ -31,16 +29,28 @@
         </div>
       </div>
     </q-item-section>
-    <q-item-section side>
-      <q-btn
-        @click.stop="deletePrompt(id)"
-        dense
-        round
-        outline
-        color="red"
-        icon="delete_forever"
-      />
+    <q-item-section side >
+      <q-btn class="q-pr2"
+          @click.stop="showEditTask = true"
+          flat
+          dense
+          round
+          color="primary"
+          icon="edit"
+        />
+        <q-btn
+          @click.stop="deletePrompt(id)"
+          flat
+          dense
+          round
+          color="red"
+          icon="delete_forever"
+        />
+        
     </q-item-section>
+    <q-dialog v-model="showEditTask">
+      <EditTask :task="task" :id="id" @close="showEditTask = false"/>
+    </q-dialog>
   </q-item>
 </template>
 
@@ -48,6 +58,12 @@
 import { mapActions } from "vuex";
 export default {
   props: ["task", "id"],
+  components: {EditTask: require("components/Tasks/Modals/EditTask.vue").default },
+  data(){
+    return{
+      showEditTask: false
+    }
+  },
   methods: {
     ...mapActions("tasks", ["updateTask", "deleteTask"]),
 
