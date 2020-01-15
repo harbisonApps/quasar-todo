@@ -1,8 +1,18 @@
 <template>
   <q-page class="q-pa-md">
-    <NoTasks @showAddTask="showAddTask = true" v-if="!Object.keys(tasksTodo).length"></NoTasks>
+    <div class="row">
+      <Sort/>
+      <Search/>
+    </div>
+    <p v-if="search && !Object.keys(tasksTodo).length && !Object.keys(tasksComplete).length">
+      <q-icon color="red" name="not_interested"/>
+      Your search didn't return a results
+      <q-icon color="red" name="not_interested"/>
+    </p>
+    
+    <NoTasks  v-if="!Object.keys(tasksTodo).length && !search"></NoTasks>
     <TasksTodo :tasksTodo="tasksTodo"
-       v-else
+       v-if="Object.keys(tasksTodo).length"
     ></TasksTodo>
     <TasksComplete v-if="Object.keys(tasksComplete).length"
       :tasksComplete="tasksComplete" >
@@ -19,7 +29,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -29,11 +39,14 @@ export default {
   components: {
     TasksTodo: require("components/Tasks/TasksTodo.vue").default,
     TasksComplete: require("components/Tasks/TasksComplete.vue").default,
+    Search: require("components/Tasks/Tools/Search.vue").default,
+    Sort: require("components/Tasks/Tools/Sort.vue").default,
     AddTask: require("components/Tasks/Modals/AddTask.vue").default,
     NoTasks: require("components/Tasks/NoTasks.vue").default
   },
   computed: {
-    ...mapGetters("tasks", ["tasksTodo", "tasksComplete"])
+    ...mapGetters("tasks", ["tasksTodo", "tasksComplete"]),
+    ...mapState("tasks", ['search'])
   },
   mounted(){
     this.$root.$on('showAddTask', () => {
