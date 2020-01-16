@@ -1,5 +1,5 @@
 <template>
-  <q-item
+  <q-item v-touch-hold:1000.mouse="showEditTaskModal"
     :class="!task.completed ? 'bg-secondary' : 'bg-positive'"
     @click="updateTask({ id: id, updates: { completed: !task.completed } })"
     clickable
@@ -10,8 +10,9 @@
     </q-item-section>
 
     <q-item-section>
-      <q-item-label :class="{ strikethrough: task.completed }">
-        {{ task.name }}
+      <q-item-label :class="{ strikethrough: task.completed }"
+      v-html="$options.filters.searchHighlight(task.name, search)">
+        <!-- {{ task.name | searchHighlight(search) }} -->
       </q-item-label>
       
       <q-item-label caption>{{ task.details }}</q-item-label>
@@ -21,7 +22,7 @@
       <div class="row">
         <div class="column justify-center">
           <q-item-label class="row justify-end" caption>
-            {{ task.dueDate }}
+            {{ task.dueDate | formatDate }}
           </q-item-label>
           <q-item-label class="row justify-end" caption>
             {{ task.dueTime }}
@@ -31,7 +32,7 @@
     </q-item-section>
     <q-item-section side >
       <q-btn class="q-pr2"
-          @click.stop="showEditTask = true"
+          @click.stop="showEditTaskModal"
           flat
           dense
           round
@@ -55,7 +56,8 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex"
+import { date } from 'quasar'
 export default {
   props: ["task", "id"],
   components: {EditTask: require("components/Tasks/Modals/EditTask.vue").default },
@@ -63,6 +65,9 @@ export default {
     return{
       showEditTask: false
     }
+  },
+  computed: {
+    ...mapState('tasks', ['search'])
   },
   methods: {
     ...mapActions("tasks", ["updateTask", "deleteTask"]),
@@ -87,6 +92,20 @@ export default {
           console.log("deleted");
           this.deleteTask(id);
         });
+    },
+    showEditTaskModal() {
+      this.showEditTask = true
+    }
+  },
+  filters: {
+    formatDate(value) {
+      return date.formatDate(value, 'MMM D, YYYY')
+    },
+    searchHighlight(value, search) {
+      if(search) {
+        return value.replace(search, '<span class="bg-yellow">' + search + '</span>')
+      }
+      return value
     }
   }
 };

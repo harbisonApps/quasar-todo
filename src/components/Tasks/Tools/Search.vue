@@ -1,7 +1,8 @@
 <template>
-     <q-input class="col q-mb-md" outlined rounded autofocus
+     <q-input v-select-all class="col q-mb-md" outlined rounded autofocus
         dense clearable clear-icon="close" label="search" 
-        v-model="searchField">
+        v-model="searchField"
+        @keyup.esc="searchField = ''">
         <template v-slot:prepend>
           <q-icon name="search" />
         </template>
@@ -9,6 +10,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
+import { selectAll } from 'src/directives/directive-select-all'
 export default {
     
     computed: {
@@ -25,6 +27,7 @@ export default {
     },
     methods: {
         ...mapActions('tasks', ['setSearch'])
-    }
+    },
+    directives: { selectAll}
 }
 </script>

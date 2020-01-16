@@ -13,17 +13,11 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
+import mixinAddEditTask from 'src/mixins/mixin-add-edit-task'
 export default {
   props: ["task", "id"],
-  components: {
-    ModalHeader: require("components/Tasks/Modals/shared/ModalHeader.vue").default,
-    ModalTaskName: require("components/Tasks/Modals/shared/ModalTaskName.vue").default,
-    ModalTaskDetails: require("components/Tasks/Modals/shared/ModalTaskDetails.vue").default,
-    ModalTaskDate: require("components/Tasks/Modals/shared/ModalTaskDate.vue").default,
-    ModalTaskTime: require("components/Tasks/Modals/shared/ModalTaskTime.vue").default,
-    ModalButtons: require("components/Tasks/Modals/shared/ModalButtons.vue").default
-  },
-    data(){
+  mixins: [mixinAddEditTask],
+  data(){
       return{
         taskToSumbit: {
           // name: "",
@@ -36,12 +30,6 @@ export default {
     },
     methods: {
       ...mapActions('tasks', ['updateTask']),
-      submitForm() {
-        this.$refs.modalTaskName.$refs.name.validate()
-        if(!this.$refs.modalTaskName.$refs.name.hasError) {
-          this.submitTask()
-        }
-      },
       submitTask() {
         this.updateTask({
           id: this.id,

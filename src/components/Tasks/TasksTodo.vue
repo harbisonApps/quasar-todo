@@ -1,8 +1,13 @@
 <template>
+    <transition appear
+        enter-active-class="animated zoomIn"
+        leave-active-class="animated zoomOut absolute-top"
+    >
     <div>
         <ListHeader bgColor="bg-orange-8">
             Todo
         </ListHeader>
+        
         <q-list separator bordered>
         <Task
             v-for="(task, key) in tasksTodo"
@@ -11,7 +16,8 @@
             :id="key"
         ></Task>
         </q-list>
-    </div>
+        </div>
+    </transition>
 </template>
 <script>
 export default {
