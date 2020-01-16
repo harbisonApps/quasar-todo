@@ -24,48 +24,6 @@ const state = {
    dueTime: "08:00",
    completed: true
   },
-'id4': {
-    name: "Go to store",
-    details: "Some details",
-    dueDate: "1/30/2020",
-    dueTime: "11:00",
-    completed: false
-},
-'id5': {
-    name: "Let the dog out",
-    details: "Some details",
-    dueDate: "1/31/2020",
-    dueTime: "15:30",
-    completed: false
-},
-'id6': {
-    name: "Make dinner",
-    details: "Some details",
-    dueDate: "1/10/2020",
-    dueTime: "08:00",
-    completed: true
-},
-'id7': {
-    name: "Go to store",
-    details: "Some details",
-    dueDate: "1/30/2020",
-    dueTime: "11:00",
-    completed: false
-},
-'id8': {
-    name: "Let the dog out",
-    details: "Some details",
-    dueDate: "1/31/2020",
-    dueTime: "15:30",
-    completed: false
-},
-'id9': {
-    name: "Make dinner",
-    details: "Some details",
-    dueDate: "1/10/2020",
-    dueTime: "08:00",
-    completed: true
-},
  },
     search: '',
     sort: 'name'

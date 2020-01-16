@@ -4,7 +4,7 @@
         leave-active-class="animated zoomOut absolute-top"
     >
     <div>
-        <ListHeader bgColor="bg-orange-8">
+        <ListHeader v-if="!settings.showTasksInOneList" bgColor="bg-orange-8">
             Todo
         </ListHeader>
         
@@ -20,12 +20,19 @@
     </transition>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
+    props: ['tasksTodo'],
+
     components: {
     Task: require("components/Tasks/Task.vue").default,
     ListHeader: require('components/Shared/ListHeader.vue').default
     },
-    props: ['tasksTodo']
+
+    computed: {
+			...mapGetters('settings', ['settings'])
+		}
+    
     
 }
 </script>

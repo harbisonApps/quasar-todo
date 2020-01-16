@@ -3,8 +3,8 @@
         enter-active-class="animated zoomIn"
         leave-active-class="animated zoomOut"
     >
-        <div class="q-mt-md">
-            <ListHeader bgColor="bg-green">
+        <div :class="{'q-mt-md' : !settings.showTasksInOneList }">
+            <ListHeader v-if="!settings.showTasksInOneList"  bgColor="bg-green">
                 Complete
             </ListHeader>
             
@@ -20,11 +20,15 @@
     </transition>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
     components: {
     Task: require("components/Tasks/Task.vue").default,
     ListHeader: require('components/Shared/ListHeader.vue').default
     },
-    props: ['tasksComplete']
+    props: ['tasksComplete'],
+    computed: {
+			...mapGetters('settings', ['settings'])
+		}
 }
 </script>
