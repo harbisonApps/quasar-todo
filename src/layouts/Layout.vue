@@ -2,13 +2,11 @@
   <q-layout view="hHh lpR fFf">
     <q-header elevated>
       <q-toolbar>
-        <q-toolbar-title class="absolute-center">
-          Quasar Todo
+        <q-toolbar-title class="absolute-center"> Harbison Todo
+          <!-- <img src="../statics/HarbisonApps.png" alt="" /> -->
         </q-toolbar-title>
 
-        <div>
-          <img src="../statics/HarbisonApps.png" alt="" />
-        </div>
+        <q-btn flat to="/auth" class="absolute-right" icon-right="account_circle" label="login" />
       </q-toolbar>
     </q-header>
     <q-footer elevated>

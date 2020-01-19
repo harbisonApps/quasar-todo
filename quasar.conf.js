@@ -60,7 +60,10 @@ module.exports = function (ctx) {
         'QForm',
         'QBanner',
         'QSelect',
-        'QScrollArea'
+        'QScrollArea',
+        'QTabPanels',
+        'QTabPanel',
+        'QTab'
 
       ],
       directives: ['ClosePopup', 'TouchHold'],
