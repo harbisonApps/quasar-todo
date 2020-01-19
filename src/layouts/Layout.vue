@@ -6,7 +6,8 @@
           <!-- <img src="../statics/HarbisonApps.png" alt="" /> -->
         </q-toolbar-title>
 
-        <q-btn flat to="/auth" class="absolute-right" icon-right="account_circle" label="login" />
+        <q-btn v-if="!loggedIn" flat to="/auth" class="absolute-right" icon-right="account_circle" label="login" />
+        <q-btn @click="logoutUser" v-else flat class="absolute-right" label="logout" />
       </q-toolbar>
     </q-header>
     <q-footer elevated>
@@ -57,6 +58,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   name: "MyLayout",
 
@@ -70,7 +73,14 @@ export default {
         { to: "/about", icon: "info", label: "About" }
       ]
     };
+  },
+  computed: {
+    ...mapState('auth', ['loggedIn'])
+  },
+  methods:{
+    ...mapActions('auth', ['logoutUser'])
   }
+  
 };
 //
 </script>
