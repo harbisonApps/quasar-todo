@@ -1,7 +1,8 @@
 <template>
   <q-page class="q-pa-md column">
     <!-- <div class="q-pa-md absolute full-width full-height "> -->
-      <div class="row">
+      <template v-if="tasksDownloaded">
+        <div class="row">
         <Sort/>
         <Search/>
       </div>
@@ -25,6 +26,10 @@
         <q-btn ripple fab round class="all-pointer-events" @click="showAddTask = true"
           color="primary" size="xl" icon="add"/>
       </div>
+      </template>
+      <template v-else>
+        <q-spinner-gears class="absolute-center" size="8rem" color="orange-3" />
+      </template>
     <!-- </div> -->
     <q-dialog v-model="showAddTask">
       <AddTask @close="showAddTask = false"/>
@@ -51,7 +56,7 @@ export default {
   computed: {
     ...mapGetters("tasks", ["tasksTodo", "tasksComplete"]),
     ...mapGetters("settings", ["settings"]),
-    ...mapState("tasks", ['search'])
+    ...mapState("tasks", ['search','tasksDownloaded'])
   },
   mounted(){
     this.$root.$on('showAddTask', () => {

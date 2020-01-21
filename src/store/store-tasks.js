@@ -1,6 +1,7 @@
 import Vue from 'vue';
-import { uid } from 'quasar'
+import { uid, Notify } from 'quasar'
 import { firebaseDb, firebaseAuth } from '../boot/firebase'
+import { showErrorMessage } from '../functions/error-message'
 
 const state = {
  tasks: {
@@ -27,7 +28,8 @@ const state = {
 //   },
  },
     search: '',
-    sort: 'name'
+    sort: 'name',
+    tasksDownloaded: false
 };
 
 const mutations = {
@@ -44,11 +46,17 @@ const mutations = {
   console.log('delete id:', id);
   Vue.delete(state.tasks, id);
  },
+ clearTasks(state) {
+    state.tasks = {}
+ },
  setSearch(state, value) {
      state.search = value
  },
  setSort(state, value) {
     state.sort = value
+ },
+ setTasksDownloaded(state, value) {
+    state.tasksDownloaded = value;
  }
 };
 
@@ -65,7 +73,18 @@ const actions = {
     //console.log(payload)
     let currentUser = firebaseAuth.currentUser.uid;
     let taskRef = firebaseDb.ref('tasks/' + currentUser + '/' + payload.id);
-    taskRef.set(payload.task)
+    taskRef.set(payload.task, err => {
+        if(err) {
+            showErrorMessage(err.message)
+        } else {
+            Notify.create({
+              color: "primary",
+              message: "Task created",
+              position: "center",
+              timeout: 100
+            });
+        }
+    })
   },
   updateTask({ dispatch }, payload) {
     // -TODO: Remove consolelog
@@ -76,7 +95,21 @@ const actions = {
   fbUpdateTask({}, payload) {
     let currentUser = firebaseAuth.currentUser.uid;
     let taskRef = firebaseDb.ref("tasks/" + currentUser + "/" + payload.id);
-    taskRef.update(payload.updates);
+    taskRef.update(payload.updates, err => {
+        if (err) {
+          showErrorMessage(err.message);
+        } else {
+            let keys = Object.keys(payload.updates)
+            if (!(keys.includes('completed') && keys.length == 1)) {
+            Notify.create({
+                color: "green",
+                message: "Task updated",
+                position: "center",
+                timeout: 200
+            });
+            }
+        }
+    });
   },
   deleteTask({ dispatch }, id) {
     dispatch("fbDeleteTask", id);
@@ -84,7 +117,18 @@ const actions = {
   fbDeleteTask({}, id) {
     let currentUser = firebaseAuth.currentUser.uid;
     let taskRef = firebaseDb.ref("tasks/" + currentUser + "/" + id);
-    taskRef.remove();
+    taskRef.remove( err => {
+        if (err) {
+          showErrorMessage(err.message);
+        } else {
+            Notify.create({
+                color: "negative",
+                message: "Task deleted",
+                position: "center",
+                timeout: 200
+            })
+        }
+    });
   },
   setSearch({ commit }, value) {
     commit("setSearch", value);
@@ -96,6 +140,12 @@ const actions = {
     //console.log("reading data from firebase");
     let currentUser = firebaseAuth.currentUser.uid;
     let userTasks = firebaseDb.ref("tasks/" + currentUser);
+    // intial check for data
+    userTasks.once('value', snapshot => {
+        commit('setTasksDownloaded', true)}, err => {
+            showErrorMessage(err.message)
+            this.$router.replace('/auth')
+    })
     // update on create method
     userTasks.on("child_added", snapshot => {
       // console.log('snapshot:', snapshot)
