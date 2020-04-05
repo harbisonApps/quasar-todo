@@ -43,7 +43,7 @@ const mutations = {
  },
  deleteTask(state, id) {
   // -TODO: Remove consolelog
-  console.log('delete id:', id);
+  console.log('mutation deleteTask:', id);
   Vue.delete(state.tasks, id);
  },
  clearTasks(state) {
@@ -112,6 +112,7 @@ const actions = {
     });
   },
   deleteTask({ dispatch }, id) {
+    console.log('deleteTask:', id);
     dispatch("fbDeleteTask", id);
   },
   fbDeleteTask({}, id) {
@@ -121,6 +122,7 @@ const actions = {
         if (err) {
           showErrorMessage(err.message);
         } else {
+          console.log('fbDeleteTask:', id);
             Notify.create({
                 color: "negative",
                 message: "Task deleted",
@@ -148,7 +150,7 @@ const actions = {
     })
     // update on create method
     userTasks.on("child_added", snapshot => {
-      // console.log('snapshot:', snapshot)
+      console.log('snapshot:', snapshot)
       let task = snapshot.val();
       console.log("task", task);
       let payload = {
@@ -170,8 +172,8 @@ const actions = {
     });
     //update on delete method
     userTasks.on("child_removed", snapshot => {
-      // console.log('snapshot:', snapshot)
       let taskId = snapshot.key;
+      console.log('fbReadData delete', taskId)
       commit("deleteTask", taskId);
     });
   }

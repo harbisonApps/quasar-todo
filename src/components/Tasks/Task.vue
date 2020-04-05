@@ -96,7 +96,7 @@ export default {
           persistent: true
         })
         .onOk(() => {
-          console.log("deleted");
+          console.log("confirm delete");
           this.deleteTask(id);
         });
     },
